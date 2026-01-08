@@ -11,6 +11,7 @@ import { FeatureCards } from "@/components/feature-cards"
 import { HowItWorks } from "@/components/how-it-works"
 import { CurodontInfoCard } from "@/components/curodont-info-card"
 import { DualImageUploader } from "@/components/dual-image-uploader"
+import { ClinicaMiroBookingWidget } from "@/components/clinica-miro-booking-widget"
 
 export default function Home() {
   const [showAnalyzer, setShowAnalyzer] = useState(false)
@@ -87,10 +88,31 @@ export default function Home() {
                 <span className="text-[#00D9FF] neon-text">antes de sentirlas</span>
               </h1>
 
+              <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+                    <span className="text-white text-2xl">✓</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Tratamiento Sin Dolor</h3>
+                    <div className="space-y-1 text-base text-gray-800">
+                      <div className="flex items-center gap-2">
+                        <span className="text-green-600 font-bold">•</span>
+                        <strong>SIN INYECCIONES</strong> de anestesia
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-green-600 font-bold">•</span>
+                        <strong>SIN FRESADO MECÁNICO</strong> ni taladro
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Subheadline */}
               <p className="text-xl text-muted-foreground max-w-xl leading-relaxed">
                 Análisis instantáneo de radiografías dentales con IA. Descubre si eres elegible para
-                <strong className="text-black"> tratamiento Curodont</strong> sin taladro ni dolor.
+                <strong className="text-black"> tratamiento Curodont</strong> - regeneración sin dolor.
               </p>
 
               {/* CTA buttons */}
@@ -266,26 +288,19 @@ export default function Home() {
                 <span className="text-[#00D9FF]">sin caries?</span>
               </h2>
               <p className="text-gray-400 text-lg">
-                Agenda tu evaluación completa en Clínica Miro y descubre si eres candidato para tratamiento Curodont.
+                Agenda tu evaluación completa en Clínica Miró y descubre si eres candidato para tratamiento Curodont sin
+                inyecciones ni fresado.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="bg-[#00D9FF] text-black hover:bg-[#00D9FF]/90 rounded-full px-8 py-6 text-lg font-bold"
-                >
-                  Agendar Evaluación
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full px-8 py-6 text-lg font-semibold border-white/20 text-white hover:bg-white/10 bg-transparent"
-                >
-                  Contactar Clínica
-                </Button>
-              </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-black">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <ClinicaMiroBookingWidget />
+          </div>
         </div>
       </section>
 

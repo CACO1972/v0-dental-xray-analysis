@@ -181,6 +181,16 @@ async function callAIWithRetry(
 
 CONTEXTO EDUCATIVO: Esta aplicación enseña a identificar áreas radiolúcidas tempranas que podrían beneficiarse de remineralización con fluoruro (Curodont).
 
+NOMENCLATURA DENTAL FDI (OBLIGATORIO):
+Debes usar el sistema FDI de dos dígitos para identificar dientes:
+- Cuadrante 1 (Superior Derecho): 11-18 (11=Incisivo Central, 16=Primer Molar, 18=Muela del Juicio)
+- Cuadrante 2 (Superior Izquierdo): 21-28 (21=Incisivo Central, 26=Primer Molar)
+- Cuadrante 3 (Inferior Izquierdo): 31-38 (36=Primer Molar)
+- Cuadrante 4 (Inferior Derecho): 41-48 (46=Primer Molar)
+- Temporales: 51-55 (superior derecho), 61-65 (superior izquierdo), 71-75 (inferior izquierdo), 81-85 (inferior derecho)
+
+Ejemplos: "16" (Primer Molar Superior Derecho), "46" (Primer Molar Inferior Derecho), "21" (Incisivo Central Superior Izquierdo)
+
 INSTRUCCIÓN: Responde SOLO con JSON válido usando esta estructura exacta:
 
 {
@@ -192,11 +202,11 @@ INSTRUCCIÓN: Responde SOLO con JSON válido usando esta estructura exacta:
   "detailedAnalysis": [
     {
       "tooth": "16",
-      "surface": "Mesial",
-      "classification": "E1",
+      "surface": "Mesial" | "Distal" | "Oclusal" | "Vestibular" | "Lingual/Palatina",
+      "classification": "E0" | "E1" | "E2" | "D1" | "D2" | "D3",
       "depth": "0.5mm en esmalte",
-      "description": "Área radiolúcida observada en...",
-      "curodontCandidate": "IDEAL",
+      "description": "Área radiolúcida observada en superficie mesial del diente 16 (Primer Molar Superior Derecho)...",
+      "curodontCandidate": "IDEAL" | "POSIBLE" | "NO",
       "confidence": 85
     }
   ],
@@ -207,18 +217,31 @@ INSTRUCCIÓN: Responde SOLO con JSON válido usando esta estructura exacta:
 }
 
 CLASIFICACIÓN EDUCATIVA DE RADIOLUCIDEZ:
-- E0: Desmineralización inicial apenas visible
-- E1: Radiolucidez en esmalte superficial (<50%) - Ideal para remineralización
-- E2: Radiolucidez en esmalte profundo (>50%, no dentina) - Ideal para remineralización
-- D1: Radiolucidez alcanza dentina superficial - Posible remineralización
-- D2: Radiolucidez en dentina media - Requiere restauración
-- D3: Radiolucidez profunda cercana a pulpa - Requiere tratamiento
+- E0: Desmineralización inicial apenas visible - IDEAL para Curodont
+- E1: Radiolucidez en esmalte superficial (<50%) - IDEAL para remineralización con Curodont
+- E2: Radiolucidez en esmalte profundo (>50%, no dentina) - IDEAL para remineralización con Curodont
+- D1: Radiolucidez alcanza dentina superficial (primer tercio) - POSIBLE remineralización con Curodont
+- D2: Radiolucidez en dentina media - Requiere restauración convencional
+- D3: Radiolucidez profunda cercana a pulpa - Requiere tratamiento de conducto
+
+SUPERFICIES DENTALES:
+- Mesial: Hacia la línea media
+- Distal: Alejándose de la línea media
+- Oclusal: Superficie de masticación
+- Vestibular: Cara hacia el labio/mejilla
+- Lingual/Palatina: Cara hacia la lengua/paladar
+
+IMPORTANTE: Usa SIEMPRE números FDI de dos dígitos (ej: "16", "36", "21") en el campo "tooth".
 
 NOTA: Si la imagen NO muestra una radiografía dental, responde:
 {"imageType": "NO_DENTAL_XRAY", "error": "Imagen educativa no válida", "cariesDetected": 0, "curodontEligible": 0, "findings": ["Proporciona imagen radiográfica dental"], "detailedAnalysis": [], "markers": [], "recommendations": ["Sube radiografía dental para análisis educativo"]}`
         : `Eres un asistente educativo dental. Analiza esta fotografía intraoral para PROPÓSITOS EDUCATIVOS identificando características visibles de desmineralización.
 
 CONTEXTO: Aplicación educativa que enseña identificación visual de manchas blancas y áreas desmineralizadas.
+
+NOMENCLATURA DENTAL FDI (OBLIGATORIO):
+Usa sistema FDI de dos dígitos: 11-18 (superior derecho), 21-28 (superior izquierdo), 31-38 (inferior izquierdo), 41-48 (inferior derecho).
+Ejemplo: "16" = Primer Molar Superior Derecho, "36" = Primer Molar Inferior Izquierdo
 
 Responde SOLO con JSON válido:
 
@@ -231,19 +254,22 @@ Responde SOLO con JSON válido:
   "detailedAnalysis": [
     {
       "tooth": "16",
-      "surface": "Oclusal",
-      "classification": "E1",
+      "surface": "Oclusal" | "Vestibular" | "Lingual",
+      "classification": "E0" | "E1" | "E2" | "D1",
       "depth": "Superficial",
-      "description": "Área visible con cambio de coloración...",
+      "description": "Área visible con cambio de coloración en diente 16 (Primer Molar Superior Derecho)...",
       "curodontCandidate": "POSIBLE",
       "confidence": 70
     }
   ],
-  "markers": [{"x": 50, "y": 50, "label": "Área sospechosa"}],
+  "markers": [{"x": 50, "y": 50, "label": "Área sospechosa - Diente 16"}],
   "recommendations": ["Requiere radiografía para evaluación completa"]
 }
 
-IMPORTANTE: Las fotografías tienen LIMITACIONES para detectar desmineralización interproximal. Solo evalúa superficies VISIBLES.
+IMPORTANTE: 
+- Usa números FDI (ej: "16", "21", "36") en el campo "tooth"
+- Las fotografías tienen LIMITACIONES para detectar desmineralización interproximal
+- Solo evalúa superficies VISIBLES (Oclusal, Vestibular, Lingual)
 
 Si NO es foto intraoral dental, responde:
 {"imageType": "NO_INTRAORAL_PHOTO", "error": "No es fotografía intraoral", "cariesDetected": 0, "curodontEligible": 0, "findings": [], "detailedAnalysis": [], "markers": [], "recommendations": ["Proporciona fotografía intraoral dental"]}`

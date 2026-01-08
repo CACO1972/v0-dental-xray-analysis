@@ -21,9 +21,9 @@ const features = [
   },
   {
     icon: Shield,
-    title: "Sin Taladro",
+    title: "Sin Inyecciones Ni Fresado",
     description:
-      "Curodont regenera el esmalte con péptidos autoensamblables P11-4 que forman nuevos cristales de hidroxiapatita.",
+      "Curodont regenera el esmalte con péptidos P11-4. Cero anestesia, cero taladro, cero dolor. 100% no invasivo.",
     metric: "0",
     metricLabel: "Dolor",
   },

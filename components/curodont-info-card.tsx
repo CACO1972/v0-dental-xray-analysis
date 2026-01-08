@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Check, AlertCircle, Info } from "lucide-react"
+import { Check, AlertCircle, Info, Sparkles } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
 export function CurodontInfoCard() {
@@ -26,7 +26,38 @@ export function CurodontInfoCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
+      className="space-y-6"
     >
+      <Card className="border-2 border-[#00D9FF] bg-gradient-to-r from-[#00D9FF]/10 to-green-50 overflow-hidden">
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-14 h-14 rounded-full bg-[#00D9FF] flex items-center justify-center shrink-0">
+              <Sparkles className="w-8 h-8 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Tratamiento 100% No Invasivo</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-base">
+                <div className="flex items-center gap-2 p-3 bg-white/80 rounded-lg">
+                  <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+                    <span className="text-white font-bold text-lg">✓</span>
+                  </div>
+                  <span className="font-bold text-gray-900">SIN INYECCIONES</span>
+                </div>
+                <div className="flex items-center gap-2 p-3 bg-white/80 rounded-lg">
+                  <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+                    <span className="text-white font-bold text-lg">✓</span>
+                  </div>
+                  <span className="font-bold text-gray-900">SIN FRESADO MECÁNICO</span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 mt-3 italic">
+                Preserva 100% la estructura dental. Perfecto para niños y personas con fobia dental.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="overflow-hidden border-2 border-[#00D9FF]/20">
         <div className="bg-gradient-to-r from-black to-gray-900 p-6 text-white">
           <div className="flex items-center gap-3 mb-2">

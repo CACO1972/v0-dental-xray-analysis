@@ -272,6 +272,7 @@ function calculateLocalPrediction(
     futureProjection =
       "Alto riesgo de progresión. Sin tratamiento, las lesiones actuales avanzarán en 3-6 meses. Tratamiento urgente."
     recommendations = [
+      "✨ Considera Curodont: SIN INYECCIONES NI FRESADO",
       "Tratamiento de lesiones en próximas 4 semanas",
       "Aplicación profesional de flúor cada 3 meses",
       "Elimina snacks azucarados entre comidas",
@@ -284,6 +285,7 @@ function calculateLocalPrediction(
       "Riesgo crítico. Alta probabilidad de compromiso pulpar en 3 meses. Requiere plan de tratamiento integral."
     recommendations = [
       "⚠️ URGENTE: Agenda tratamiento esta semana",
+      "✨ Curodont disponible: SIN INYECCIONES NI FRESADO",
       "Plan integral: trata todas las lesiones",
       "Aplicación de flúor profesional mensual",
       "Evaluación dietética con higienista",

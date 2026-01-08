@@ -29,6 +29,7 @@ import { AnalysisProgressTracker } from "@/components/analysis-progress-tracker"
 import { EducationalTooltip, DENTAL_TERMS } from "@/components/educational-tooltips"
 import { ShareResultsButton } from "@/components/share-results-button"
 import { CariesVisualization } from "@/components/caries-visualization"
+import { formatToothDisplay } from "@/lib/fdi-nomenclature"
 
 interface CariesLesion {
   tooth: string
@@ -577,9 +578,11 @@ export function DualImageUploader() {
                             }`}
                           >
                             <div className="flex items-start justify-between">
-                              <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                  <span className="font-bold text-black">Diente {lesion.tooth}</span>
+                              <div className="space-y-1 flex-1">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="font-bold text-black text-lg">
+                                    {formatToothDisplay(lesion.tooth)}
+                                  </span>
                                   <Badge
                                     className={
                                       lesion.curodontEligible === "IDEAL"
@@ -597,11 +600,13 @@ export function DualImageUploader() {
                                   </Badge>
                                 </div>
                                 <p className="text-sm text-muted-foreground">
-                                  {lesion.surface} • {lesion.classification} • {lesion.depth}
+                                  <span className="font-medium">Superficie:</span> {lesion.surface} •
+                                  <span className="font-medium ml-2">Clasificación:</span> {lesion.classification} •
+                                  <span className="font-medium ml-2">Profundidad:</span> {lesion.depth}
                                 </p>
-                                <p className="text-sm text-gray-700">{lesion.description}</p>
+                                <p className="text-sm text-gray-700 mt-2">{lesion.description}</p>
                               </div>
-                              <div className="text-right">
+                              <div className="text-right ml-4">
                                 <div className="text-2xl font-bold text-[#00D9FF]">
                                   {Math.round(lesion.confidence)}%
                                 </div>
