@@ -252,6 +252,59 @@ export function DualImageUploader() {
   const posibleCount = result?.curodontSummary?.possiblyEligible || 0
   const noCount = result?.curodontSummary?.notEligible || 0
 
+  // Generar markers automaticamente si no vienen de la API pero hay lesiones detectadas
+  const generateMarkersFromLesions = (lesions: CariesLesion[]) => {
+    if (!lesions || lesions.length === 0) return []
+    
+    // Distribuir markers en un grid sobre la imagen basado en el numero de diente
+    return lesions.map((lesion, index) => {
+      // Extraer numero de diente para calcular posicion aproximada
+      const toothNum = parseInt(lesion.tooth.replace(/\D/g, '')) || (index + 1)
+      
+      // Calcular posicion X basada en el cuadrante dental (FDI)
+      // Cuadrante 1 (11-18): derecha superior -> x: 50-90%
+      // Cuadrante 2 (21-28): izquierda superior -> x: 10-50%
+      // Cuadrante 3 (31-38): izquierda inferior -> x: 10-50%
+      // Cuadrante 4 (41-48): derecha inferior -> x: 50-90%
+      let x = 50
+      let y = 50
+      
+      if (toothNum >= 11 && toothNum <= 18) {
+        x = 90 - ((toothNum - 11) * 5)
+        y = 30 + (index * 5)
+      } else if (toothNum >= 21 && toothNum <= 28) {
+        x = 10 + ((toothNum - 21) * 5)
+        y = 30 + (index * 5)
+      } else if (toothNum >= 31 && toothNum <= 38) {
+        x = 10 + ((toothNum - 31) * 5)
+        y = 60 + (index * 5)
+      } else if (toothNum >= 41 && toothNum <= 48) {
+        x = 90 - ((toothNum - 41) * 5)
+        y = 60 + (index * 5)
+      } else {
+        // Distribucion generica para dientes no estandar
+        x = 20 + (index * 15) % 60
+        y = 30 + (index * 10) % 40
+      }
+      
+      return {
+        x: Math.min(Math.max(x, 10), 90), // Mantener entre 10% y 90%
+        y: Math.min(Math.max(y, 15), 85),
+        label: `${formatToothDisplay(lesion.tooth)} - ${lesion.surface}`,
+        curodontEligible: lesion.curodontEligible,
+        classification: lesion.classification,
+        confidence: lesion.confidence
+      }
+    })
+  }
+
+  // Usar markers de la API si existen, sino generarlos de las lesiones
+  const displayMarkers = result?.markers && result.markers.length > 0 
+    ? result.markers 
+    : result?.detailedAnalysis 
+      ? generateMarkersFromLesions(result.detailedAnalysis)
+      : []
+
   return (
     <div className="space-y-6">
       <MedicalDisclaimer />
@@ -650,10 +703,11 @@ export function DualImageUploader() {
 
               {result.riskPrediction && <RiskPredictionCard prediction={result.riskPrediction} />}
 
-              {result.markers && result.markers.length > 0 && (radiographPreview || intraoralPreview) && (
+              {/* Mostrar visualización con overlays siempre que haya lesiones detectadas */}
+              {displayMarkers.length > 0 && (radiographPreview || intraoralPreview) && (
                 <CariesVisualization
                   imageUrl={radiographPreview || intraoralPreview || ""}
-                  markers={result.markers}
+                  markers={displayMarkers}
                   imageType={radiographPreview ? "radiograph" : "intraoral"}
                 />
               )}
