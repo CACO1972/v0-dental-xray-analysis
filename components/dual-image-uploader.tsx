@@ -21,6 +21,8 @@ import {
   ArrowRight,
   Info,
   XCircle,
+  Calendar,
+  MessageCircle,
 } from "lucide-react"
 import { RiskPredictionCard } from "@/components/risk-prediction-card"
 import { validateImageFile, detectImageQuality } from "@/lib/validators"
@@ -664,12 +666,33 @@ export function DualImageUploader() {
               >
                 <h3 className="text-2xl font-bold text-black mb-2">¿Quieres confirmar el diagnóstico?</h3>
                 <p className="text-muted-foreground mb-6">
-                  Agenda una cita en Clínica Miro para una evaluación completa y tratamiento personalizado.
+                  Agenda una cita en Clínica Miró para una evaluación completa y tratamiento personalizado.
                 </p>
-                <Button size="lg" className="bg-black text-white hover:bg-black/90 rounded-full px-8">
-                  Agendar Evaluación
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    size="lg"
+                    className="bg-black text-white hover:bg-black/90 rounded-full px-8"
+                    onClick={() => window.open("https://ff.healthatom.io/TA6eA1", "_blank")}
+                  >
+                    <Calendar className="w-5 h-5 mr-2" />
+                    Agendar Evaluación
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full px-8 border-2 bg-transparent"
+                    onClick={() =>
+                      window.open(
+                        "https://wa.me/56974157966?text=Hola, acabo de analizar mi radiografía en Zero Caries y me gustaría agendar una evaluación",
+                        "_blank",
+                      )
+                    }
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    WhatsApp
+                  </Button>
+                </div>
               </motion.div>
             </motion.div>
           )}

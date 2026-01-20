@@ -83,9 +83,11 @@ export default function Home() {
 
               {/* Headline */}
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-[1.1] tracking-tight">
-                Detecta caries
+                Detectamos caries
                 <br />
-                <span className="text-[#00D9FF] neon-text">antes de sentirlas</span>
+                <span className="text-[#00D9FF] neon-text">antes de que se noten</span>
+                <br />
+                <span className="text-3xl md:text-4xl lg:text-5xl text-gray-600 font-medium">o te duela</span>
               </h1>
 
               <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200">

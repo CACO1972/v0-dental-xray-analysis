@@ -2,13 +2,17 @@ import { type NextRequest, NextResponse } from "next/server"
 import { generateText } from "ai"
 import { createClient } from "@/lib/supabase/server"
 import { validateImageFile, validatePatientAge, AIAnalysisSchema, normalizeAIResponse } from "@/lib/validators"
+import { anaLiza } from "@/lib/ana-liza"
 
 const AI_TIMEOUT_MS = 60000 // 60 segundos
 const MAX_RETRIES = 2
 
 export async function POST(request: NextRequest) {
+  // Iniciar monitoreo ANA LIZA
+  const requestId = anaLiza.startMonitoring()
+  
   try {
-    console.log("[v0] Starting dual analysis")
+    console.log("[v0] Starting dual analysis - ANA LIZA Request ID:", requestId)
     const formData = await request.formData()
     const radiograph = formData.get("radiograph") as File | null
     const intraoral = formData.get("intraoral") as File | null
@@ -138,10 +142,26 @@ export async function POST(request: NextRequest) {
       combinedResult.analysisId = analysisData.id
     }
 
+    // Registrar metricas exitosas con ANA LIZA
+    anaLiza.recordMetrics({
+      model: visionModel,
+      imageType: radiograph ? "radiograph" : "intraoral",
+      success: true,
+      aiResponse: combinedResult,
+    })
+
     console.log("[v0] Returning result to client")
     return NextResponse.json(combinedResult)
   } catch (error) {
     console.error("[v0] Error in dual analysis:", error)
+
+    // Registrar error con ANA LIZA
+    anaLiza.recordMetrics({
+      model: "openai/gpt-4o",
+      imageType: "radiograph",
+      success: false,
+      errorType: error instanceof Error ? error.message : "unknown",
+    })
 
     if (error instanceof Error && error.message.includes("timeout")) {
       return NextResponse.json(
@@ -439,10 +459,9 @@ function combineAnalyses(analyses: any[], patientAge: string | null): any {
     hasRadiograph: !!rxAnalysis,
     hasIntraoral: !!ioAnalysis,
     patientAge: patientAge ? Number.parseInt(patientAge) : null,
-    deepCaries: allDetailedAnalysis.filter((d: any) => d.depth?.includes("D2") || d.depth?.includes("D3")).length,
-    superficialCaries: allDetailedAnalysis.filter(
-      (d: any) => d.depth?.includes("E1") || d.depth?.includes("E2") || d.depth?.includes("D1"),
-    ).length,
+    deepCaries: allDetailedAnalysis.filter((d: any) => d.classification === "D2" || d.classification === "D3").length,
+    superficialCaries: allDetailedAnalysis.filter((d: any) => ["E0", "E1", "E2", "D1"].includes(d.classification))
+      .length,
   })
 
   return {
